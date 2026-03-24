@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý khách hàng</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --card: #ffffff;
+      --line: #e1e5ef;
+      --text: #1f2430;
+      --muted: #647089;
+      --primary: #a32437;
+      --danger: #cb2c45;
+      --info: #2d5cb8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    h1 { margin: 0 0 12px; font-size: 22px; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    input {
+      width: 280px;
+      max-width: 100%;
+      border: 1px solid #ccd2df;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+    }
+    button.secondary { background: #5e6b85; }
+    button.danger { background: var(--danger); }
+    button.info { background: var(--info); }
+    #adminPanel { display: none; }
+    .toolbar {
+      margin: 10px 0 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .toolbar input {
+      width: 320px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f8f9fd; }
+    td .tiny {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    td .name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .action-btn {
+      padding: 6px 8px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+    .action-wrap {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .message {
+      margin-top: 8px;
+      color: var(--danger);
+      font-size: 13px;
+      min-height: 16px;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 10;
+    }
+    .overlay.visible { display: flex; }
+    .dialog {
+      width: min(780px, 100%);
+      max-height: 85vh;
+      overflow: auto;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      padding: 14px;
+    }
+    .dialog pre {
+      white-space: pre-wrap;
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="loginCard">
+      <h1>Trang quản lý</h1>
+      <p class="muted">Nhập mật khẩu admin để xem dữ liệu khách hàng.</p>
+      <div class="row">
+        <input id="adminPassword" type="password" placeholder="Nhập mật khẩu admin">
+        <button id="loginBtn" type="button">Đăng nhập</button>
+      </div>
+      <div class="message" id="loginMessage"></div>
+      <p class="muted">Mật khẩu mặc định: <b>admin123</b> (đổi trong biến <code>ADMIN_PASSWORD</code>).</p>
+    </div>
+
+    <div class="card" id="adminPanel">
+      <div class="row" style="justify-content: space-between;">
+        <h1 style="margin: 0;">Danh sách submit</h1>
+        <div class="row">
+          <button class="secondary" id="logoutBtn" type="button">Đăng xuất</button>
+          <button class="danger" id="clearBtn" type="button">Xóa toàn bộ</button>
+        </div>
+      </div>
+      <p class="muted" id="totalText"></p>
+      <div class="toolbar">
+        <input id="searchInput" type="text" placeholder="Tìm theo tên, sđt, gói thiệp...">
+        <button class="secondary" id="resetSearchBtn" type="button">Xóa lọc</button>
+      </div>
+      <div style="overflow: auto;">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th>Thời gian</th>
+              <th>Khách hàng</th>
+              <th>Gói thiệp</th>
+              <th>Cặp đôi</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="detailOverlay">
+    <div class="dialog">
+      <div class="row" style="justify-content: space-between; margin-bottom: 10px;">
+        <h1 style="margin: 0; font-size: 18px;">Chi tiết submit</h1>
+        <button class="secondary" id="closeDetailBtn" type="button">Đóng</button>
+      </div>
+      <pre id="detailContent"></pre>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "weddingFormSubmissions";
+    const SESSION_KEY = "adminLoggedIn";
+    const ADMIN_PASSWORD = "admin123";
+    const FIELD_LABELS = {
+      submittedAt: "Thời gian gửi",
+      zaloName: "Tên Zalo",
+      phone: "Số điện thoại liên hệ",
+      package: "Chọn gói thiệp",
+      template: "Chọn mẫu",
+      groomTemplate: "Mẫu thiệp nhà trai",
+      brideTemplate: "Mẫu thiệp nhà gái",
+      hasQR: "Thiệp có chèn QR ngân hàng",
+      rush: "Làm gấp trong ngày",
+      guestNameFeature: "Sử dụng tính năng điền tên khách",
+      groomName: "Tên chú rể",
+      groomRank: "Vai trò chú rể",
+      brideName: "Tên cô dâu",
+      brideRank: "Vai trò cô dâu",
+      groomFather: "Tên ba (nhà trai)",
+      groomMother: "Tên mẹ (nhà trai)",
+      groomAddress: "Địa chỉ nhà trai",
+      brideFather: "Tên ba (nhà gái)",
+      brideMother: "Tên mẹ (nhà gái)",
+      brideAddress: "Địa chỉ nhà gái",
+      eventCeremonyName: "Tên lễ (chung)",
+      eventCeremonyTime: "Thời gian lễ (chung)",
+      eventCeremonyPlace: "Nơi tổ chức lễ (chung)",
+      eventPartyName: "Tên tiệc (chung)",
+      eventPartyTime: "Thời gian tiệc (chung)",
+      eventPartyPlace: "Nơi tổ chức tiệc (chung)",
+      eventPartyAddress: "Địa chỉ tiệc (chung)",
+      eventPartyMap: "Link Google Map tiệc (chung)",
+      groomCeremonyName: "Tên lễ (nhà trai)",
+      groomCeremonyTime: "Thời gian lễ (nhà trai)",
+      groomCeremonyPlace: "Nơi tổ chức lễ (nhà trai)",
+      groomPartyName: "Tên tiệc (nhà trai)",
+      groomPartyTime: "Thời gian tiệc (nhà trai)",
+      groomPartyPlace: "Nơi tổ chức tiệc (nhà trai)",
+      groomPartyAddress: "Địa chỉ tiệc (nhà trai)",
+      groomPartyMap: "Link Google Map tiệc (nhà trai)",
+      brideCeremonyName: "Tên lễ (nhà gái)",
+      brideCeremonyTime: "Thời gian lễ (nhà gái)",
+      brideCeremonyPlace: "Nơi tổ chức lễ (nhà gái)",
+      bridePartyName: "Tên tiệc (nhà gái)",
+      bridePartyTime: "Thời gian tiệc (nhà gái)",
+      bridePartyPlace: "Nơi tổ chức tiệc (nhà gái)",
+      bridePartyAddress: "Địa chỉ tiệc (nhà gái)",
+      bridePartyMap: "Link Google Map tiệc (nhà gái)",
+      note: "Ghi chú thêm"
+    };
+
+    const loginCard = document.getElementById("loginCard");
+    const adminPanel = document.getElementById("adminPanel");
+    const adminPassword = document.getElementById("adminPassword");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginMessage = document.getElementById("loginMessage");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const tableBody = document.getElementById("tableBody");
+    const totalText = document.getElementById("totalText");
+    const searchInput = document.getElementById("searchInput");
+    const resetSearchBtn = document.getElementById("resetSearchBtn");
+    const detailOverlay = document.getElementById("detailOverlay");
+    const detailContent = document.getElementById("detailContent");
+    const closeDetailBtn = document.getElementById("closeDetailBtn");
+    let currentRows = [];
+
+    function getSubmissions() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    }
+
+    function saveSubmissions(rows) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function prettifyKey(key) {
+      return key
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (char) => char.toUpperCase());
+    }
+
+    function getFieldLabel(key) {
+      return FIELD_LABELS[key] || prettifyKey(key);
+    }
+
+    function makeDetailText(row) {
+      const orderedKeys = Object.keys(row).sort((a, b) => {
+        if (a === "submittedAt") return -1;
+        if (b === "submittedAt") return 1;
+        return a.localeCompare(b);
+      });
+
+      const lines = [];
+      orderedKeys.forEach((key) => {
+        const rawValue = row[key];
+        if (key !== "submittedAt" && (rawValue === undefined || rawValue === null || rawValue === "")) {
+          return;
+        }
+
+        let displayValue = rawValue;
+        if (key === "submittedAt") {
+          displayValue = rawValue ? new Date(rawValue).toLocaleString("vi-VN") : "";
+        }
+        lines.push(`${getFieldLabel(key)}: ${displayValue || ""}`);
+      });
+
+      return lines.join("\n");
+    }
+
+    function renderRows() {
+      const keyword = (searchInput.value || "").trim().toLowerCase();
+      const rows = getSubmissions();
+      currentRows = rows;
+      const filtered = rows.filter((row) => {
+        if (!keyword) return true;
+        const raw = Object.values(row).join(" ").toLowerCase();
+        return raw.includes(keyword);
+      });
+      totalText.textContent = `Tổng: ${filtered.length}/${rows.length} bản ghi`;
+      tableBody.innerHTML = "";
+
+      if (!filtered.length) {
+        tableBody.innerHTML = "<tr><td colspan='5'>Không có dữ liệu phù hợp.</td></tr>";
+        return;
+      }
+
+      filtered.forEach((row) => {
+        const rowIndex = rows.indexOf(row);
+        const tr = document.createElement("tr");
+        const submittedAt = row.submittedAt ? new Date(row.submittedAt).toLocaleString("vi-VN") : "";
+        tr.innerHTML = `
+          <td>${escapeHtml(submittedAt)}</td>
+          <td>
+            <div class="name">${escapeHtml(row.zaloName)}</div>
+            <div class="tiny">${escapeHtml(row.phone)}</div>
+          </td>
+          <td>${escapeHtml(row.package)}</td>
+          <td>${escapeHtml(row.groomName)} - ${escapeHtml(row.brideName)}</td>
+          <td>
+            <div class="action-wrap">
+              <button class="info action-btn" type="button" data-action="view" data-row-index="${rowIndex}">Xem</button>
+              <button class="danger action-btn" type="button" data-action="delete" data-row-index="${rowIndex}">Xóa</button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function deleteRowByIndex(index) {
+      if (!Number.isInteger(index) || index < 0) return;
+      const ok = window.confirm("Bạn có chắc muốn xóa đơn này?");
+      if (!ok) return;
+      const rows = getSubmissions();
+      rows.splice(index, 1);
+      saveSubmissions(rows);
+      renderRows();
+    }
+
+    function showDetail(index) {
+      const row = currentRows[index];
+      if (!row) return;
+      detailContent.textContent = makeDetailText(row);
+      detailOverlay.classList.add("visible");
+    }
+
+    function showPanel() {
+      loginCard.style.display = "none";
+      adminPanel.style.display = "block";
+      renderRows();
+    }
+
+    function showLogin() {
+      adminPanel.style.display = "none";
+      loginCard.style.display = "block";
+      adminPassword.value = "";
+    }
+
+    loginBtn.addEventListener("click", () => {
+      if (adminPassword.value === ADMIN_PASSWORD) {
+        sessionStorage.setItem(SESSION_KEY, "1");
+        loginMessage.textContent = "";
+        showPanel();
+        return;
+      }
+      loginMessage.textContent = "Sai mật khẩu admin.";
+    });
+
+    adminPassword.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        loginBtn.click();
+      }
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      sessionStorage.removeItem(SESSION_KEY);
+      showLogin();
+    });
+
+    clearBtn.addEventListener("click", () => {
+      const ok = window.confirm("Bạn có chắc muốn xóa toàn bộ dữ liệu submit?");
+      if (!ok) {
+        return;
+      }
+      localStorage.removeItem(STORAGE_KEY);
+      renderRows();
+    });
+
+    searchInput.addEventListener("input", () => {
+      renderRows();
+    });
+
+    resetSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      renderRows();
+      searchInput.focus();
+    });
+
+    closeDetailBtn.addEventListener("click", () => {
+      detailOverlay.classList.remove("visible");
+    });
+
+    detailOverlay.addEventListener("click", (event) => {
+      if (event.target === detailOverlay) {
+        detailOverlay.classList.remove("visible");
+      }
+    });
+
+    tableBody.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+      const index = Number(button.dataset.rowIndex);
+      const action = button.dataset.action;
+      if (action === "view") {
+        showDetail(index);
+      } else if (action === "delete") {
+        deleteRowByIndex(index);
+      }
+    });
+
+    if (sessionStorage.getItem(SESSION_KEY) === "1") {
+      showPanel();
+    } else {
+      showLogin();
+    }
+  </script>
+</body>
+</html>

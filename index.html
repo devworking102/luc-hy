@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THIỆP CƯỚI ONLINE LONG THỊNH - ĐIỀN THÔNG TIN THIỆP</title>
+  <style>
+    :root {
+      --bg-outer: #e2e2e2;
+      --bg-center: #8f1b2d;
+      --card: #fffefe;
+      --text: #2d2023;
+      --muted: #7d6a6e;
+      --line: #e9d9de;
+      --primary: #a32437;
+      --primary-dark: #841d2c;
+      --success: #1f8a5a;
+      --warning: #b83e3e;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(90deg, var(--bg-outer) 0 calc(50% - 210px), var(--bg-center) calc(50% - 210px) calc(50% + 210px), var(--bg-outer) calc(50% + 210px) 100%);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 10px 8px 36px;
+      min-height: 100vh;
+      background: var(--bg-center);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .brand-top {
+      display: flex;
+      justify-content: center;
+      padding: 8px 0 10px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 392px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(30, 10, 14, 0.2);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .header h2 {
+      margin: 6px 0 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #8a1f31;
+    }
+
+    .required-note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .logo-badge {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto;
+      border-radius: 999px;
+      border: 2px solid #eec8cf;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+      line-height: 1.1;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .content {
+      padding: 14px 14px 22px;
+    }
+
+    .section-title {
+      margin: 24px 0 12px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #8d2f3c;
+      border-left: 0;
+      padding-left: 0;
+    }
+
+    .sub-title {
+      margin: 16px 0 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #7f2d39;
+      text-transform: uppercase;
+    }
+
+    .hint {
+      font-size: 12px;
+	  font-weight: 400;
+      color: var(--muted);
+      margin: 0 0 12px;
+	  display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      border: 1px solid #eadde1;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 7px;
+      line-height: 1.35;
+    }
+
+    .field {
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    .required::after {
+      content: "Bắt buộc";
+      color: #a72b3d;
+      background: #fcecef;
+      border: 1px solid #f4ccd4;
+      border-radius: 999px;
+      padding: 3px 6px 3px;
+      margin-left: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #dedfe5;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.35;
+      background: #f9fafc;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      outline: 2px solid rgba(178, 58, 72, 0.16);
+    }
+
+    textarea {
+      min-height: 84px;
+      resize: vertical;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      padding: 2px 0 2px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      border: 1px solid #d6d8de;
+      border-radius: 999px;
+      background: #f6f7fa;
+      padding: 6px 12px;
+      line-height: 1;
+    }
+
+    .radio input {
+      width: auto;
+      padding: 0;
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .mini-btn {
+      border: 0;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 11px;
+      padding: 5px 10px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .divider {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 20px 0 12px;
+    }
+
+    .actions {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 6px 12px rgba(163, 36, 55, 0.32);
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #f6eaec;
+      color: #7b3442;
+    }
+
+    .status {
+      margin-top: 16px;
+      border: 1px solid #c5ead7;
+      background: #f3fdf8;
+      border-radius: 12px;
+      padding: 14px;
+      display: none;
+      font-size: 13px;
+    }
+
+    .status.visible {
+      display: block;
+    }
+
+    /* Sau khi submit: an toan bo form, chi giu lai hop trang thai */
+    #weddingForm.submitted > :not(#statusBox) {
+      display: none !important;
+    }
+
+    .status-title {
+      font-weight: 700;
+      color: #086d40;
+      margin-bottom: 8px;
+    }
+
+    .status ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .status li {
+      margin: 6px 0;
+      color: #2d4538;
+      font-size: 13px;
+    }
+
+    .status-links {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      border: 1px solid #ddbbc2;
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #8d2f3c;
+    }
+
+    .error {
+      color: var(--warning);
+      margin-top: 12px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .error.visible {
+      display: block;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      margin-top: 20px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 460px) {
+      body {
+        background: var(--bg-center);
+      }
+
+      .page {
+        padding: 8px 8px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="brand-top">
+      <div class="logo-badge">LT<br>LONG THỊNH</div>
+    </div>
+    <div class="card">
+      <div class="header">
+        <h1>THIỆP CƯỚI ONLINE LONG THỊNH</h1>
+        <h2>ĐIỀN THÔNG TIN THIỆP</h2>
+        <div class="required-note">Vui lòng điền đầy đủ các ô *Bắt buộc.</div>
+      </div>
+
+      <div class="content">
+        <form id="weddingForm" novalidate>
+          <div class="grid">
+            <div class="field">
+              <label class="required" for="zaloName">Tên Zalo</label>
+              <input id="zaloName" name="zaloName" required>
+            </div>
+            <div class="field">
+              <label class="required" for="phone">Số điện thoại liên hệ</label>
+              <input id="phone" name="phone" required>
+            </div>
+          </div>
+
+          <h3 class="section-title">CÁC LỰA CHỌN</h3>
+          <div class="grid">
+            <div class="field full">
+              <label class="required" for="package">Chọn gói thiệp</label>
+              <select id="package" name="package" required>
+                <option value="">-- Chọn --</option>
+                <option>1 thiệp cho nhà trai - 149K</option>
+                <option>1 thiệp cho nhà gái - 149K</option>
+                <option>1 thiệp cho nhà trai và nhà gái tổ chức tiệc chung - 149K</option>
+                <option>1 thiệp cho cả nhà trai + nhà gái - 219K</option>
+                <option>2 thiệp riêng cho nhà trai và nhà gái (chung mẫu) - 249K</option>
+                <option>2 thiệp riêng cho nhà trai và nhà gái (khác mẫu) - 279K</option>
+              </select>
+            </div>
+            <div class="field full" id="singleTemplateField">
+              <div class="label-row">
+                <label class="required" for="template">Chọn mẫu</label>
+                <button type="button" class="mini-btn">Xem mẫu thiệp</button>
+              </div>
+              <select id="template" name="template">
+                <option value="">-- Chọn mẫu --</option>
+              </select>
+            </div>
+            <div class="field" id="groomTemplateField" style="display: none;">
+              <label class="required" for="groomTemplate">Mẫu thiệp nhà trai</label>
+              <select id="groomTemplate" name="groomTemplate">
+                <option value="">-- Chọn mẫu nhà trai --</option>
+              </select>
+            </div>
+            <div class="field" id="brideTemplateField" style="display: none;">
+              <label class="required" for="brideTemplate">Mẫu thiệp nhà gái</label>
+              <select id="brideTemplate" name="brideTemplate">
+                <option value="">-- Chọn mẫu nhà gái --</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="required">Thiệp có chèn QR ngân hàng?</label>
+              <div class="radio-group">
+                <label class="radio"><input type="radio" name="hasQR" value="Có" required> Có</label>
+                <label class="radio"><input type="radio" name="hasQR" value="Không" required> Không</label>
+              </div>
+            </div>
+            <div class="field">
+              <label class="required">Làm gấp trong ngày?</label>
+              <div class="radio-group">
+                <label class="radio"><input type="radio" name="rush" value="Có (có phụ phí)" required> Có (có phụ phí)</label>
+                <label class="radio"><input type="radio" name="rush" value="Không" required> Không</label>
+              </div>
+            </div>
+            <div class="field full">
+              <label class="required">Sử dụng tính năng điền tên khách?</label>
+              <div class="radio-group">
+                <label class="radio"><input type="radio" name="guestNameFeature" value="Có (thêm phí 99K)" required> Có (thêm phí 99K)</label>
+                <label class="radio"><input type="radio" name="guestNameFeature" value="Không" required> Không</label>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="section-title">THÔNG TIN CHUNG</h3>
+          <div class="grid">
+            <div class="field">
+              <label class="required" for="groomName">Tên Chú Rể</label>
+              <input id="groomName" name="groomName" required>
+            </div>
+            <div class="field">
+              <label for="groomRank">Chọn Trưởng Nam hoặc ...</label>
+              <select id="groomRank" name="groomRank">
+                <option>(Không chọn)</option>
+                <option>Chú Rể</option>
+                <option>Trưởng Nam (Con trai trưởng)</option>
+                <option>Quý Nam (Con trai duy nhất)</option>
+                <option>Thứ Nam (Con trai thứ)</option>
+                <option>Út Nam (Con trai út)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="required" for="brideName">Tên Cô Dâu</label>
+              <input id="brideName" name="brideName" required>
+            </div>
+            <div class="field">
+              <label for="brideRank">Chọn Trưởng Nữ hoặc ...</label>
+              <select id="brideRank" name="brideRank">
+                <option>(Không chọn)</option>
+                <option>Cô Dâu</option>
+                <option>Trưởng Nữ (Con gái trưởng)</option>
+                <option>Quý Nữ (Con gái duy nhất)</option>
+                <option>Thứ Nữ (Con gái thứ)</option>
+                <option>Út Nữ (Con gái út)</option>
+              </select>
+            </div>
+          </div>
+
+          <h3 class="section-title">NHÀ TRAI</h3>
+          <div class="sub-title">THÔNG TIN PHỤ HUYNH & ĐỊA CHỈ</div>
+          <div class="grid">
+            <div class="field">
+              <label for="groomFather">Tên Ba (Nhà Trai)</label>
+              <input id="groomFather" name="groomFather">
+            </div>
+            <div class="field">
+              <label for="groomMother">Tên Mẹ (Nhà Trai)</label>
+              <input id="groomMother" name="groomMother">
+            </div>
+            <div class="field full">
+              <label for="groomAddress">Địa chỉ (Nhà Trai)</label>
+              <input id="groomAddress" name="groomAddress">
+            </div>
+          </div>
+
+          <h3 class="section-title">NHÀ GÁI</h3>
+          <div class="sub-title">THÔNG TIN PHỤ HUYNH & ĐỊA CHỈ</div>
+          <div class="grid">
+            <div class="field">
+              <label for="brideFather">Tên Ba (Nhà Gái)</label>
+              <input id="brideFather" name="brideFather">
+            </div>
+            <div class="field">
+              <label for="brideMother">Tên Mẹ (Nhà Gái)</label>
+              <input id="brideMother" name="brideMother">
+            </div>
+            <div class="field full">
+              <label for="brideAddress">Địa chỉ (Nhà Gái)</label>
+              <input id="brideAddress" name="brideAddress">
+            </div>
+          </div>
+
+          <h3 class="section-title">PHẦN LỄ <span class="hint">(bỏ qua nếu không có hoặc không đưa vào thiệp)</span></h3>
+          <div class="grid">
+            <div class="field">
+              <label for="eventCeremonyName">Tên Lễ</label>
+              <input id="eventCeremonyName" name="eventCeremonyName">
+            </div>
+            <div class="field">
+              <label for="eventCeremonyTime">Thời gian đầy đủ</label>
+              <input id="eventCeremonyTime" name="eventCeremonyTime">
+            </div>
+            <div class="field full">
+              <label for="eventCeremonyPlace">Nơi tổ chức</label>
+              <input id="eventCeremonyPlace" name="eventCeremonyPlace">
+            </div>
+          </div>
+
+          <h3 class="section-title">PHẦN TIỆC <span class="hint">(bỏ qua nếu không có hoặc không đưa vào thiệp)</span></h3>
+          <div class="grid">
+            <div class="field">
+              <label for="eventPartyName">Tên Tiệc</label>
+              <input id="eventPartyName" name="eventPartyName">
+            </div>
+            <div class="field">
+              <label for="eventPartyTime">Thời gian đầy đủ</label>
+              <input id="eventPartyTime" name="eventPartyTime">
+            </div>
+            <div class="field">
+              <label for="eventPartyPlace">Nơi tổ chức</label>
+              <input id="eventPartyPlace" name="eventPartyPlace">
+            </div>
+            <div class="field">
+              <label for="eventPartyAddress">Địa chỉ chi tiết</label>
+              <input id="eventPartyAddress" name="eventPartyAddress">
+            </div>
+            <div class="field full">
+              <label for="eventPartyMap">Link Google Map</label>
+              <input id="eventPartyMap" name="eventPartyMap">
+            </div>
+          </div>
+
+          <hr class="divider">
+          <h3 class="section-title">THÔNG TIN LỄ/TIỆC Điền theo từng nhà (Lễ & Tiệc riêng của mỗi nhà)</h3>
+
+          <div class="sub-title">NHÀ TRAI</div>
+          <div class="sub-title">PHẦN LỄ</div>
+          <p class="hint">(bỏ qua nếu không có hoặc không đưa vào thiệp)</p>
+          <div class="grid">
+            <div class="field">
+              <label for="groomCeremonyName">Tên Lễ</label>
+              <input id="groomCeremonyName" name="groomCeremonyName">
+            </div>
+            <div class="field">
+              <label for="groomCeremonyTime">Thời gian đầy đủ</label>
+              <input id="groomCeremonyTime" name="groomCeremonyTime">
+            </div>
+            <div class="field full">
+              <label for="groomCeremonyPlace">Nơi tổ chức</label>
+              <input id="groomCeremonyPlace" name="groomCeremonyPlace">
+            </div>
+          </div>
+
+          <div class="sub-title">PHẦN TIỆC</div>
+          <p class="hint">(bỏ qua nếu không có hoặc không đưa vào thiệp)</p>
+          <div class="grid">
+            <div class="field">
+              <label for="groomPartyName">Tên Tiệc</label>
+              <input id="groomPartyName" name="groomPartyName">
+            </div>
+            <div class="field">
+              <label for="groomPartyTime">Thời gian đầy đủ</label>
+              <input id="groomPartyTime" name="groomPartyTime">
+            </div>
+            <div class="field">
+              <label for="groomPartyPlace">Nơi tổ chức</label>
+              <input id="groomPartyPlace" name="groomPartyPlace">
+            </div>
+            <div class="field">
+              <label for="groomPartyAddress">Địa chỉ chi tiết</label>
+              <input id="groomPartyAddress" name="groomPartyAddress">
+            </div>
+            <div class="field full">
+              <label for="groomPartyMap">Link Google Map</label>
+              <input id="groomPartyMap" name="groomPartyMap">
+            </div>
+          </div>
+
+          <div class="sub-title">NHÀ GÁI</div>
+          <div class="sub-title">PHẦN LỄ</div>
+          <p class="hint">(bỏ qua nếu không có hoặc không đưa vào thiệp)</p>
+          <div class="grid">
+            <div class="field">
+              <label for="brideCeremonyName">Tên Lễ</label>
+              <input id="brideCeremonyName" name="brideCeremonyName">
+            </div>
+            <div class="field">
+              <label for="brideCeremonyTime">Thời gian đầy đủ</label>
+              <input id="brideCeremonyTime" name="brideCeremonyTime">
+            </div>
+            <div class="field full">
+              <label for="brideCeremonyPlace">Nơi tổ chức</label>
+              <input id="brideCeremonyPlace" name="brideCeremonyPlace">
+            </div>
+          </div>
+
+          <div class="sub-title">PHẦN TIỆC</div>
+          <p class="hint">(bỏ qua nếu không có hoặc không đưa vào thiệp)</p>
+          <div class="grid">
+            <div class="field">
+              <label for="bridePartyName">Tên Tiệc</label>
+              <input id="bridePartyName" name="bridePartyName">
+            </div>
+            <div class="field">
+              <label for="bridePartyTime">Thời gian đầy đủ</label>
+              <input id="bridePartyTime" name="bridePartyTime">
+            </div>
+            <div class="field">
+              <label for="bridePartyPlace">Nơi tổ chức</label>
+              <input id="bridePartyPlace" name="bridePartyPlace">
+            </div>
+            <div class="field">
+              <label for="bridePartyAddress">Địa chỉ chi tiết</label>
+              <input id="bridePartyAddress" name="bridePartyAddress">
+            </div>
+            <div class="field full">
+              <label for="bridePartyMap">Link Google Map</label>
+              <input id="bridePartyMap" name="bridePartyMap">
+            </div>
+          </div>
+
+          <div class="grid" style="margin-top: 14px;">
+            <div class="field full">
+              <label for="note">Ghi chú thêm</label>
+              <textarea id="note" name="note"></textarea>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn btn-primary">GỬI NGAY ⏳</button>
+          </div>
+          <div id="requiredError" class="error">Hãy điền đủ các ô thông tin bắt buộc để có thể gửi form.</div>
+
+          <div id="statusBox" class="status">
+            <div class="status-title">✓ TRẠNG THÁI • Cảm ơn bạn đã cung cấp thông tin. Chúng tôi sẽ xử lý và liên hệ lại trong thời gian sớm nhất.</div>
+            <ul>
+              <li>Vui lòng gửi 10–15 hình ảnh và mã QR ngân hàng cho nhân viên tư vấn qua Zalo.</li>
+              <li>Nếu cần chỉnh sửa hoặc hỗ trợ thêm, hãy liên hệ với nhân viên tư vấn.</li>
+            </ul>
+            <div class="status-links">
+              <button type="button" class="chip" id="zaloBtn">Zalo CHUYỂN SANG ZALO</button>
+              <button type="button" class="chip" id="editInfoBtn">SỬA THÔNG TIN</button>
+            </div>
+            <p class="footer-note">Cảm ơn bạn. Chúng tôi đã nhận được bài dự thi của bạn! Hãy chú ý điện thoại hoặc email vì chúng tôi sẽ liên hệ với bạn sớm.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const templateOptions = [
+      "MẪU CƠ BẢN",
+      "MẪU ĐỎ CƠ BẢN",
+      "MẪU ĐỎ TRẮNG",
+      "MẪU ĐỎ VÀNG",
+      "MẪU ĐỎ MỘC NÂU",
+      "MẪU HOA ĐỎ BE",
+      "MẪU BE SỮA",
+      "MẪU VÀNG",
+      "MẪU VÀNG XANH",
+      "MẪU XANH LÁ",
+      "MẪU XANH DƯƠNG",
+      "MẪU TRẮNG XANH DƯƠNG",
+      "MẪU HỒNG",
+      "MẪU HOA SEN",
+      "MẪU HOA RUM",
+      "MẪU ĐỎ KHÔNG ẢNH"
+    ];
+
+    const packageSelect = document.getElementById("package");
+    const templateSelect = document.getElementById("template");
+    const groomTemplateSelect = document.getElementById("groomTemplate");
+    const brideTemplateSelect = document.getElementById("brideTemplate");
+    const singleTemplateField = document.getElementById("singleTemplateField");
+    const groomTemplateField = document.getElementById("groomTemplateField");
+    const brideTemplateField = document.getElementById("brideTemplateField");
+
+    function fillOptions(selectElement, placeholder) {
+      selectElement.innerHTML = "";
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = placeholder;
+      selectElement.appendChild(first);
+
+      templateOptions.forEach((value) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        selectElement.appendChild(option);
+      });
+    }
+
+    fillOptions(templateSelect, "-- Chọn mẫu --");
+    fillOptions(groomTemplateSelect, "-- Chọn mẫu nhà trai --");
+    fillOptions(brideTemplateSelect, "-- Chọn mẫu nhà gái --");
+
+    function applyTemplateVisibility() {
+      const packageValue = packageSelect.value;
+      const isDoubleTemplate =
+        packageValue.includes("2 thiệp riêng") || packageValue.includes("cả nhà trai + nhà gái");
+
+      if (packageValue.includes("2 thiệp riêng") || packageValue.includes("cả nhà trai + nhà gái")) {
+        singleTemplateField.style.display = "none";
+        groomTemplateField.style.display = "";
+        brideTemplateField.style.display = "";
+        templateSelect.required = false;
+        groomTemplateSelect.required = true;
+        brideTemplateSelect.required = true;
+
+        if (packageValue.includes("(chung mẫu)")) {
+          brideTemplateSelect.value = groomTemplateSelect.value;
+          brideTemplateSelect.disabled = true;
+        } else {
+          brideTemplateSelect.disabled = false;
+        }
+      } else {
+        singleTemplateField.style.display = "";
+        groomTemplateField.style.display = "none";
+        brideTemplateField.style.display = "none";
+        templateSelect.required = true;
+        groomTemplateSelect.required = false;
+        brideTemplateSelect.required = false;
+        brideTemplateSelect.disabled = false;
+      }
+    }
+
+    packageSelect.addEventListener("change", applyTemplateVisibility);
+    groomTemplateSelect.addEventListener("change", () => {
+      if (packageSelect.value.includes("(chung mẫu)")) {
+        brideTemplateSelect.value = groomTemplateSelect.value;
+      }
+    });
+
+    const form = document.getElementById("weddingForm");
+    const statusBox = document.getElementById("statusBox");
+    const requiredError = document.getElementById("requiredError");
+    const zaloBtn = document.getElementById("zaloBtn");
+    const editInfoBtn = document.getElementById("editInfoBtn");
+
+    // Tu dong them placeholder theo nhan cua truong de tranh bo sot.
+    function applyAutoPlaceholders() {
+      const fields = form.querySelectorAll(".field");
+      fields.forEach((field) => {
+        const label = field.querySelector("label");
+        const input = field.querySelector("input, textarea");
+        if (!label || !input || input.placeholder) {
+          return;
+        }
+
+        const cleanLabel = label.textContent.replace("Bắt buộc", "").trim();
+        const isTextArea = input.tagName.toLowerCase() === "textarea";
+        const looksLikeLink = /liên kết|link|map/i.test(cleanLabel);
+        const prefix = looksLikeLink ? "Dán" : (isTextArea ? "Nhập" : "Nhập");
+        input.placeholder = `${prefix} ${cleanLabel.toLowerCase()}`;
+      });
+    }
+
+    applyAutoPlaceholders();
+
+    function validateRequiredRadios(groupName) {
+      const selected = form.querySelector(`input[name="${groupName}"]:checked`);
+      return Boolean(selected);
+    }
+
+    const STORAGE_KEY = "weddingFormSubmissions";
+
+    function saveSubmission(data) {
+      const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      current.unshift(data);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      requiredError.classList.remove("visible");
+
+      const validInputs = form.checkValidity();
+      const radioValid =
+        validateRequiredRadios("hasQR") &&
+        validateRequiredRadios("rush") &&
+        validateRequiredRadios("guestNameFeature");
+
+      if (!validInputs || !radioValid) {
+        form.classList.remove("submitted");
+        requiredError.classList.add("visible");
+        form.reportValidity();
+        statusBox.classList.remove("visible");
+        return;
+      }
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+      payload.submittedAt = new Date().toISOString();
+      saveSubmission(payload);
+
+      form.classList.add("submitted");
+      statusBox.classList.add("visible");
+      form.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    editInfoBtn.addEventListener("click", () => {
+      form.classList.remove("submitted");
+      statusBox.classList.remove("visible");
+      form.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    // TODO: thay link Zalo thuc te cua ban o day.
+    zaloBtn.addEventListener("click", () => {
+      window.open("https://zalo.me/", "_blank", "noopener,noreferrer");
+    });
+
+  </script>
+</body>
+</html>
